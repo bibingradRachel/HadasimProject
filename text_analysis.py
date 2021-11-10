@@ -89,23 +89,29 @@ def text_analysis(path_read_file, path_write_file):
 
             if word in numbers:
                 # will check the next word if it number
-                line[i + 1] = line[i + 1].lower()
-                line[i + 1] = re.sub(r'[^\w]', '', line[i + 1])
-                if line[i + 1] in scales:
-                    sum = numbers[word] + scales[line[i+1]]
-                    max_num_now += int(sum)
+                if i < len(line)-1:
+                    line[i + 1] = line[i + 1].lower()
+                    line[i + 1] = re.sub(r'[^\w]', '', line[i + 1])
+                    if line[i + 1] in scales:
+                        sum = numbers[word] + scales[line[i+1]]
+                        max_num_now += int(sum)
+                    else:
+                        max_num_now += int(numbers[word])
                 else:
                     max_num_now += int(numbers[word])
 
             elif word in tens:
                 # will check the next word -> line[i+1]
-                line[i+1] = line[i+1].lower()
-                line[i+1] = re.sub(r'[^\w]', '', line[i+1])
-                if line[i+1] in numbers:
-                    max_num_now += str(int(tens[word])//10)
-                elif line[i+1] in scales:
-                    sum = tens[word] + scales[line[i + 1]]
-                    max_num_now += int(sum)
+                if i < len(line)-1:
+                    line[i+1] = line[i+1].lower()
+                    line[i+1] = re.sub(r'[^\w]', '', line[i+1])
+                    if line[i+1] in numbers:
+                        max_num_now += str(int(tens[word])//10)
+                    elif line[i+1] in scales:
+                        sum = tens[word] + scales[line[i + 1]]
+                        max_num_now += int(sum)
+                    else:
+                        max_num_now += int(tens[word])
                 else:
                     max_num_now += int(tens[word])
 
@@ -134,7 +140,9 @@ def text_analysis(path_read_file, path_write_file):
         f.write('\n')
         f.write("מספר מילים יחודיות:  " + str(counter_unique_words))
         f.write('\n')
-        f.write("רצף המילים הארוך ביותר ללא קיי:  " + str(longest_seq_without_k))
+        f.write("רצף המילים הארוך ביותר ללא קיי:"  )
+        f.write('\n')
+        f.write(str(longest_seq_without_k))
         f.write('\n')
         f.write("שמות הצבעים בטקסט וכמה פעמים מופיע כול אחד:  " + str(colors))
         f.write('\n')
